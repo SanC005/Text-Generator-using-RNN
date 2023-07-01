@@ -1,0 +1,94 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="display: flex; justify-content: center;align-items: center; flex-direction: column;">
+    <div style="display: block;">
+        <h1>RNN based Text generation <br /></h1>
+    </div>
+
+
+
+    <div>
+        <h2>Enter some text</h2>
+    </div>
+
+    <input class="inputBox" style="width: 30%; height: 30px;border: 3px black solid;"></input>
+
+    <button class="btn" style="margin: 20px; width: 100px;height: 25px;border-radius: 8px;">Generate</button>
+
+    <h2>Output</h2>
+
+    <div class="imagebox" style="display: none;">
+        <img src="{{url_for('static', filename='spin.gif')}}" alt="Image Placeholder"  height="80" 
+     lowsrc="/images/loading.gif">
+    </div>
+
+
+
+
+    <div class="textbox" style="border: 3px black solid; width: 40%; height: 300px;">
+        
+
+    </div>
+
+
+
+
+
+</body>
+
+
+
+</html>
+
+<script>
+    const inputBox = document.querySelector('.inputBox')
+const btn = document.querySelector('.btn')
+const loader = document.querySelector('.imagebox')
+const outputBox = document.querySelector('.textbox')
+
+btn.addEventListener('click', (e)=> {
+    loader.style.display = ''
+    outputBox.style.display = 'none'
+
+
+
+
+    //console.log(inputBox.value);
+ generate(inputBox.value)
+
+})
+
+async function generate(query) {
+  console.log("heyyy")
+    fetch("http://127.0.0.1:5000/generate", {
+  method: "POST",
+  mode: 'cors',
+  body: JSON.stringify({
+    "query":query
+  }),
+  headers: {
+    "Content-type": "application/json; charset=UTF-8"
+  }
+})
+  .then((response) => response.json())
+  .then((json) => {
+    loader.style.display = 'none'
+    outputBox.innerHTML =  query + json.data
+    outputBox.style.display =''
+    console.log(json)
+
+  }
+  
+  );
+    
+
+  
+
+}
+</script>
